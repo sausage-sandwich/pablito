@@ -1,5 +1,4 @@
-(ns pablito.core
-  (:gen-class))
+(ns pablito.core)
 
 ; Energe density in kcal/g
 (def energy-density
@@ -19,8 +18,3 @@
         max-calories (product->calories (into {} (map (fn [[component value]] (vector component (second value))) components)))]
     (and (<= (apply min calories) max-calories)
          (>= (apply max calories) min-calories))))
-
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hi! I'm Pablito!"))

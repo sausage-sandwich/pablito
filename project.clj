@@ -1,6 +1,17 @@
 (defproject pablito "0.1.0-SNAPSHOT"
   :description "Pablito. The code of Tasty and Healthy Food"
-  :dependencies [[org.clojure/clojure "1.10.0-beta4"]]
-  :main ^:skip-aot pablito.core
+  :dependencies [
+    [org.clojure/clojure "1.10.0-beta4"]
+    [org.immutant/web "2.1.10"]
+    [compojure "1.6.1"]
+  ]
+  :main pablito.server
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {
+    :dev {
+      :dependencies [
+        [ring/ring-mock "0.3.2"]
+      ]
+    }
+    :uberjar {:aot :all}
+  })

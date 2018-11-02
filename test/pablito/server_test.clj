@@ -5,5 +5,7 @@
    [ring.mock.request :as mock]))
 
 (deftest application-test
-  (is (= (server/application (mock/request :get "/"))
-         {:status 404 :body "You are too fat! 404"})))
+  (is (= "<head><title>Pablito</title></head><body>Hello, Pablito!</body>"
+         (:body (server/application (mock/request :get "/")))))
+  (is (= "Not found"
+         (:body (server/application (mock/request :get "/404"))))))

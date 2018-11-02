@@ -12,6 +12,9 @@
       :dependencies [
         [ring/ring-mock "0.3.2"]
       ]
+      :plugins [
+        [lein-cloverage "1.0.13"]
+      ]
     }
     :uberjar {:aot :all}
   })

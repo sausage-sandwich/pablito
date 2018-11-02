@@ -1,14 +1,19 @@
 (ns pablito.server
   (:require
-   [immutant.web :as web]
-   [compojure.core :as compojure])
+   [compojure.route]
+   [compojure.core :as compojure]
+   [hiccup.core :as hiccup]
+   [immutant.web :as web])
   (:gen-class))
 
-(def application
-  (compojure/routes
-   (fn [request]
-     {:status 404
-      :body "You are too fat! 404"})))
+(def page
+  (hiccup/html [:head
+                [:title "Pablito"]]
+               [:body "Hello, Pablito!"]))
+
+(compojure/defroutes application
+  (compojure/GET "/" [] page)
+  (compojure.route/not-found "Not found"))
 
 (defn -main [& args]
   (let [args-map (apply array-map args)

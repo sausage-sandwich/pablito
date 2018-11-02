@@ -4,6 +4,7 @@
     [org.clojure/clojure "1.10.0-beta4"]
     [org.immutant/web "2.1.10"]
     [compojure "1.6.1"]
+    [hiccup "1.0.5"]
   ]
   :main pablito.server
   :target-path "target/%s"

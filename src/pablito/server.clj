@@ -2,6 +2,7 @@
   (:require
    [compojure.route]
    [compojure.core :as compojure]
+   [environ.core :refer [env]]
    [hiccup.core :as hiccup]
    [immutant.web :as web])
   (:gen-class))
@@ -16,7 +17,7 @@
   (compojure.route/not-found "Not found"))
 
 (defn run []
-  (let [port-str "3000"]
+  (let [port-str (env :port "3000")]
     (println "Starting web server on port" port-str)
     (web/run #'application {:port (Integer/parseInt port-str)})))
 

@@ -17,9 +17,11 @@
   (compojure.route/not-found "Not found"))
 
 (defn run []
-  (let [port-str (env :port "3000")]
+  (let [port-str (env :port "3000")
+        host-str "0.0.0.0"]
     (println "Starting web server on port" port-str)
-    (web/run #'application {:port (Integer/parseInt port-str)})))
+    (web/run #'application {:port (Integer/parseInt port-str)
+                            :host host-str})))
 
 (defn -main [& args]
   (run))

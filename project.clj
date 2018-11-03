@@ -11,6 +11,7 @@
   :profiles {
     :dev {
       :dependencies [
+        [environ        "1.1.0"]
         [ring/ring-mock "0.3.2"]
       ]
       :plugins [

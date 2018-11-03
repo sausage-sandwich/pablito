@@ -7,21 +7,21 @@
   (:gen-class))
 
 (def page
-  (hiccup/html [:head
-                [:title "Pablito"]]
-               [:body "Hello, Pablito!"]))
+  (hiccup/html
+   [:head [:title "Pablito"]]
+   [:body "Hello, Pablito!"]))
 
 (compojure/defroutes application
   (compojure/GET "/" [] page)
   (compojure.route/not-found "Not found"))
 
-(defn -main [& args]
-  (let [args-map (apply array-map args)
-        port-str (or (get args-map "-p")
-                     (get args-map "--port")
-                     "3000")]
+(defn run []
+  (let [port-str "3000"]
     (println "Starting web server on port" port-str)
     (web/run #'application {:port (Integer/parseInt port-str)})))
+
+(defn -main [& args]
+  (run))
 
 (comment
   (def server (-main))

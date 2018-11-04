@@ -4,17 +4,48 @@
    [compojure.core :as compojure]
    [environ.core :refer [env]]
    [hiccup.core :as hiccup]
+   [hiccup.form]
    [immutant.web :as web])
   (:gen-class))
 
-(def page
+(def index-page
   (hiccup/html
-   [:head [:title "Pablito"]]
-   [:body "Hello, Pablito!"]))
+   [:head
+    [:title "Pablito"]
+    [:link
+     {:href        "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      :rel         "stylesheet"
+      :integrity   "sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      :crossorigin "anonymous"}]
+    [:link {:href "css/styles.css" :rel "stylesheet" :type "text/css"}]]
+   [:body
+    [:div.container
+     [:div.jumbotron
+      (hiccup.form/form-to
+       [:post "/"]
+       [:div.form-group
+        [:label "Calories"]
+        [:input.form-control {:name :calories :placeholder "2000-2500"}]]
+       [:div.form-group
+        [:label "Proteins"]
+        [:input.form-control {:name :proteins}]]
+       [:div.form-group
+        [:label "Fats"]
+        [:input.form-control {:name :fats}]]
+       [:div.form-group
+        [:label "Carbohydrates"]
+        [:input.form-control {:name :carbohydrates}]]
+       [:button.btn.btn-primary {:type :sumbit} "Feed me!"])]]]))
 
-(compojure/defroutes application
-  (compojure/GET "/" [] page)
-  (compojure.route/not-found "Not found"))
+(compojure/defroutes routes
+  (compojure/GET "/" [] index-page)
+  (compojure/POST "/" [] index-page))
+
+(def application
+  (compojure/routes
+   routes
+   (compojure.route/resources "/", {:root "static"})
+   (compojure.route/not-found "Not found")))
 
 (defn run []
   (let [port-str (env :port "3000")

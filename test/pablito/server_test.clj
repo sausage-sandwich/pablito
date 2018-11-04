@@ -6,10 +6,8 @@
    [immutant.web]))
 
 (deftest application-test
-  (is (= "<head><title>Pablito</title></head><body>Hello, Pablito!</body>"
-         (:body (server/application (mock/request :get "/")))))
-  (is (= "Not found"
-         (:body (server/application (mock/request :get "/404"))))))
+  (is (= 200 (:status (server/application (mock/request :get "/")))))
+  (is (= 404 (:status (server/application (mock/request :get "/404"))))))
 
 (deftest run-server-test
   (is (immutant.web/stop (server/run))))

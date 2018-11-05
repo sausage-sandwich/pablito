@@ -6,6 +6,8 @@
     [compojure "1.6.1"]
     [environ "1.1.0"]
     [hiccup "1.0.5"]
+    [ring-oauth2 "0.1.4"]
+    [ring/ring-defaults "0.3.2"]
   ]
   :main pablito.server
   :target-path "target/%s"

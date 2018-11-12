@@ -3,7 +3,12 @@
             [pablito.core :refer :all]))
 
 (deftest product->calories-test
-  (is (= 63.265 (product->calories {:fats 3.5 :proteins 2.8 :carbohydrates 4.7}))))
+  (testing "Black Currant Drink"
+    (is (= 86.1 (product->calories {:proteins 0 :fats 0 :carbohydrates 21}))))
+  (testing "Omelet with baked tomatoes"
+    (is (= 187.46 (product->calories {:proteins 11 :fats 14 :carbohydrates 3}))))
+  (testing "Oatmeal with baked apple and cinnamon"
+    (is (= 366.852 (product->calories {:proteins 9.6 :fats 4.8 :carbohydrates 69})))))
 
 (deftest valid-calories?-test
   (let [components {:fats [30 50] :proteins [180 220] :carbohydrates [150 180]}]

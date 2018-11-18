@@ -5,7 +5,12 @@
    [environ.core :refer [env]]
    [hiccup.core :as hiccup]
    [hiccup.form]
-   [immutant.web :as web])
+   [immutant.web :as web]
+   [ring.middleware.keyword-params]
+   [ring.middleware.params]
+
+   [pablito.core :as core]
+   [pablito.db :as db])
   (:gen-class))
 
 (def index-page
@@ -39,11 +44,16 @@
 
 (compojure/defroutes routes
   (compojure/GET "/" [] index-page)
-  (compojure/POST "/" [] index-page))
+  (compojure/POST "/" []
+    (fn [{{calories :calories} :params :as req}]
+      (str (core/dishes-by-calories (Integer/parseInt calories)
+                                    (shuffle pablito.db/dishes))))))
 
 (def application
   (compojure/routes
-   routes
+   (-> routes
+       (ring.middleware.keyword-params/wrap-keyword-params)
+       (ring.middleware.params/wrap-params))
    (compojure.route/resources "/", {:root "static"})
    (compojure.route/not-found "Not found")))
 

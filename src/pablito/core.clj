@@ -6,11 +6,13 @@
    :proteins 4.1
    :carbohydrates 4.1})
 
+(defn micronutrient->calories
+  [micronutrient weight]
+  (* (get energy-density micronutrient) weight))
+
 (defn product->calories
   [product]
-  (reduce + (map (fn [[component value]]
-                   (* (get energy-density component) value))
-                 product)))
+  (reduce + (map #(apply micronutrient->calories %) product)))
 
 (defn valid-calories?
   [{:keys [:calories :components]}]

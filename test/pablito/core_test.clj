@@ -14,3 +14,13 @@
   (let [components {:fats [30 50] :proteins [180 220] :carbohydrates [150 180]}]
     (is (valid-calories? {:calories [1700 1900] :components components}))
     (is (not (valid-calories? {:calories [100 500] :components components})))))
+
+(deftest dishes-by-calories-test
+  (testing "dishes be calories"
+    (let [menu [{:name "Напиток из черной смородины", :calories 84}
+                {:name "Омлет с запеченными томатами", :calories 186}
+                {:name "Овсяная каша с запеченным яблоком и корицей", :calories 353}]]
+      (is (= (take 0 menu) (dishes-by-calories 50 menu)))
+      (is (= (take 1 menu) (dishes-by-calories 100 menu)))
+      (is (= (take 2 menu) (dishes-by-calories 300 menu)))
+      (is (= (take 3 menu) (dishes-by-calories 700 menu))))))

@@ -5,7 +5,10 @@
    [environ.core :refer [env]]
    [hiccup.core :as hiccup]
    [hiccup.form]
-   [immutant.web :as web])
+   [immutant.web :as web]
+   [ring.middleware.oauth2]
+   [ring.middleware.defaults :refer
+    [wrap-defaults secure-site-defaults site-defaults]])
   (:gen-class))
 
 (def index-page
@@ -41,9 +44,30 @@
   (compojure/GET "/" [] index-page)
   (compojure/POST "/" [] index-page))
 
+(defn wrap-oauth2
+  [handler]
+  (ring.middleware.oauth2/wrap-oauth2
+   handler
+   {:instagram
+    {:authorize-uri    "https://api.instagram.com/oauth/authorize"
+     :access-token-uri "https://api.instagram.com/oauth/access_token"
+     :client-id        (env :instagram-client-id)
+     :client-secret    (env :instagram-client-secret)
+     :scopes           ["basic"]
+     :launch-uri       "/oauth2/instagram"
+     :redirect-uri     "/oauth2/instagram/callback"
+     :landing-uri      "/"}}))
+
 (def application
   (compojure/routes
-   routes
+   (->
+    routes
+    (wrap-oauth2)
+    (wrap-defaults (->
+                    (get {:production secure-site-defaults}
+                         (env :ring-dev)
+                         site-defaults)
+                    (assoc-in [:session :cookie-attrs :same-site] :lax))))
    (compojure.route/resources "/", {:root "static"})
    (compojure.route/not-found "Not found")))
 
